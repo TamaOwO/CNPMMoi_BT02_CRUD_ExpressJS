@@ -5,7 +5,7 @@ const salt = bcrypt.genSaltSync(10); //Tao salt de ma hoa mat khau
 let createNewUser = async (data) => { //Ham user, tham so data
     return new Promise(async (resolve, reject) => { //Tra ve promise
         try {
-            let hashPasswordFromBcrypt = await hashUserPassword(data.password); //Ma hoa mat khau
+            let hashPasswordFromBcrypt = await hashPassword(data.password); //Ma hoa mat khau
             await db.User.create({ //Tao moi user
                 email: data.email,
                 password: hashPasswordFromBcrypt,
@@ -68,7 +68,7 @@ let getUserInfoById = (userId) => {
         }
     })
 }
-let updateUserData = (data) => {
+let updateUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let user = await db.User.findOne({ //Tim user theo id
@@ -81,7 +81,7 @@ let updateUserData = (data) => {
                 await user.save();
                 //Lay danh sach user
                 let getAllUsers = await db.User.findAll();
-                resolve(allusers);
+                resolve(getAllUsers);
                 } else{
                     resolve(); //Neu khong co user, tra ve thong bao thanh cong
                 }
@@ -94,7 +94,7 @@ let updateUserData = (data) => {
 let deleteUserById = (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let user = await db.User.destroy({ //Xoa user theo id
+            let user = await db.User.findOne({ //Xoa user theo id
                 where: {id: userId} //Dieu kien xoa user
             });
             if (user) {

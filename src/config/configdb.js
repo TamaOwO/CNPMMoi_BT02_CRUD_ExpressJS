@@ -1,11 +1,13 @@
-import { Sequelize, Squelize } from 'sequelize';
+import { Sequelize  } from 'sequelize';
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.json')[env];
 //cosnt { Sequelize } = require('sequelize'); //ES5 module
 
 //Option 3:Passing parameter separately (other dialects)
-const sequelize = new Sequelize('node_fullstack', 'root', '1234567@a$', {
+const sequelize = new Sequelize(config.database, config.username, config.password, {
     host: 'localhost',
     dialect: 'mysql',   
-    logging: fale
+    logging: false
 });
 let connectDB = async () => {
     try {

@@ -29,7 +29,7 @@ let getCRUD = (req, res) => {
 //Ham findAll CRUD
 let getFindAllCrud = async (req, res) => {
     let data = await CRUDServices.getAllUsers(); //Lay tat ca user
-    return res.render('displayCRUD.ejs', { //Render trang displayCRUD
+    return res.render('users/findAllUser.ejs', { //Render trang displayCRUD
         dataTable: data //Truyen du lieu vao trang
     });
 }
@@ -46,7 +46,7 @@ let getEditCRUD = async (req, res) => {
     let userId = req.query.id; //Lay id tu query
     if (userId) {
         let userData = await CRUDServices.getUserInfoById(userId); //Lay thong tin user theo id
-        return res.render('users/editUser.ejs', { //Render trang editCRUD
+        return res.render('users/updateUser.ejs', { //Render trang editCRUD
             user: userData //Truyen du lieu vao trang
         });
     } else {
@@ -66,19 +66,20 @@ let deleteCRUD = async (req, res) => {
     let id = req.query.id; //Lay id tu query
     if (id) {
         await CRUDServices.deleteUserById(id); //Goi ham xoa user theo id
-        return res.send('Deleted'); //Chuyen huong ve trang get-crud
+        let data = await CRUDServices.getAllUsers(); //Lay tat ca user
+        return res.send('Deleted', {dataTable: data}); //Chuyen huong ve trang get-crud
     } else {
         return res.send('User not found'); //Neu khong tim thay user, tra ve thong bao
     }
 
-    module.exports = { //Export cac ham
-        getHomePage: getHomePage, //Export ham getHomePage  
-        getAboutPage: getAboutPage, //Export ham getAboutPage
-        getCRUD: getCRUD, //Export ham getCRUD
-        postCRUD: postCRUD, //Export ham postCRUD
-        getFindAllCrud: getFindAllCrud, //Export ham getFindAllCrud
-        getEditCRUD: getEditCRUD, //Export ham getEditCRUD
-        putCRUD: putCRUD, //Export ham putCRUD
-        deleteCRUD: deleteCRUD //Export ham deleteCRUD
-    }
+}
+module.exports = { //Export cac ham
+    getHomePage: getHomePage, //Export ham getHomePage  
+    getAboutPage: getAboutPage, //Export ham getAboutPage
+    getCRUD: getCRUD, //Export ham getCRUD
+    postCRUD: postCRUD, //Export ham postCRUD
+    getFindAllCrud: getFindAllCrud, //Export ham getFindAllCrud
+    getEditCRUD: getEditCRUD, //Export ham getEditCRUD
+    putCRUD: putCRUD, //Export ham putCRUD
+    deleteCRUD: deleteCRUD //Export ham deleteCRUD
 }
